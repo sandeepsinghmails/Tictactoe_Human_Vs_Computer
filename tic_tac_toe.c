@@ -79,16 +79,31 @@ int main()
 
 	/* Allocate Memory for Rows */
 	char **matrix = malloc(ROWSIZE*sizeof(char*));
+	if (NULL==matrix)
+	{
+		printf("\nMemory Allocation failed\n");
+		exit (EXIT_FAILURE);
+	}
 
 	/* Now, allocate memory for Columns */
 	for (rowindex=0; rowindex<ROWSIZE; rowindex++)
 	{
 		*(matrix+rowindex) = malloc(COLSIZE*sizeof(char));
+		if (NULL==*(matrix+rowindex))
+		{
+			printf("\nMemory Allocation failed\n");
+			exit (EXIT_FAILURE);
+		}
 		memset (*(matrix+rowindex), 'O', COLSIZE*sizeof(char));
 	}
 
 	/* Initialize the Global Stats Structure */
 	p_global_stats = malloc(3*sizeof(global_stats));      /* For User:0, Computer:1 and Vacant Positions:2 */
+	if (NULL==p_global_stats)
+	{
+		printf("\nMemory Allocation failed\n");
+		exit (EXIT_FAILURE);
+	}
 
 	for (counter=0; counter<3; counter++)
 	{
