@@ -34,7 +34,14 @@ In general: 'O' means -> vacant position
 ===============
 How to Compile:
 ===============
+If you do not want to print Stats after every Human move, compile as follows:
+
 $ gcc tic_tac_toe.c -ansi -Wall -pedantic -o tictactoe
+
+If you want to print Stats after every Human move, compile as follows:
+
+$ gcc tic_tac_toe.c -ansi -Wall -pedantic -o tictactoe -DDEBUG_FLAG
+
 
 ======================
 How To Play this Game:
