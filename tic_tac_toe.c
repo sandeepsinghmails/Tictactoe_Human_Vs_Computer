@@ -111,7 +111,7 @@ int main()
 		p_global_stats[counter].col_stats = calloc(COLSIZE, sizeof(int));
 	}
 
-	printf("\nWelcome to Sandeep's Tic-Tac-Toe Game!\n\n");
+	printf("\nWelcome to the Game: Tic-Tac-Toe -- Human Vs Computer !\n\n");
 	/* Print the Tic-Tac-Toe Array */
 	print_tic_tac_toe(matrix);
 
