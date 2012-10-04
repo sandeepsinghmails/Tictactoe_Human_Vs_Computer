@@ -53,4 +53,4 @@ For Example:
 
 Suppose the User wants to make an entry at: Row No. 2, Column No. 3
 
-Then, the User must provide the folloing Input: 2 3 (Enter)
+Then, the User must provide the following Input: 2 3 (Enter)
