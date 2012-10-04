@@ -2,7 +2,7 @@
  * Author: Sandeep Singh
  * Date  : Oct 2, 2012
  * 
- * Copyright 2012 Sandeep Singh
+ * Copyright 2012 Sandeep Singh (sandeepsinghmails@gmail.com)
  *
  * This file is part of  Tic-Tac-Toe--Human-Vs-Computer.
  * Tic-Tac-Toe--Human-Vs-Computer is free software: you can redistribute it
