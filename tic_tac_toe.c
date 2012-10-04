@@ -125,7 +125,9 @@ int main()
 		print_tic_tac_toe(matrix);
 
 		victory_flag = update_stats(matrix);
-		/* print_stats(matrix); */
+		#ifdef DEBUG_FLAG
+		print_stats(matrix); 
+		#endif
 		/* Check if the User has Won */
 		if (victory_flag == VICTORY)
 		{
