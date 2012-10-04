@@ -31,6 +31,11 @@ In general: 'O' means -> vacant position
             'X' means -> User's Entry
             'Y' means -> Computer's Entry
 
+===============
+How to Compile:
+===============
+$ gcc tic_tac_toe.c -ansi -Wall -pedantic -o tictactoe
+
 ======================
 How To Play this Game:
 ======================
