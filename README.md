@@ -20,7 +20,9 @@ You Win:: If you are able to complete any of the below conditions -
 
 You Lose:: If none of the above mentioned conditions (to win) are fulfilled, you are Defeated.
 
+==================
 Basic Information:
+==================
 
 Based upon the Dimensions of the Matrix you choose (eg: 3x3, 4x4 etc), you will be presented with a Printed Matrix
 initialized with all 'O's.
@@ -29,7 +31,9 @@ In general: 'O' means -> vacant position
             'X' means -> User's Entry
             'Y' means -> Computer's Entry
 
-How To Play the Game:
+======================
+How To Play this Game:
+======================
 
 For each Chance, the User has to provide 2 Inputs: ROWNO COLNO
 
@@ -38,11 +42,3 @@ For Example:
 Suppose the User wants to make an entry at: Row No. 2, Column No. 3
 
 Then, the User must provide the folloing Input: 2 3 (Enter)
-
-
-
-
-
-
-
-
