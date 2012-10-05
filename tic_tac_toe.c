@@ -23,9 +23,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define ROWSIZE 	  4
-#define COLSIZE 	  4
-
 #define VICTORY 	  1
 #define NO_VICTORY 	  0
 
@@ -42,6 +39,7 @@ int  update_stats 		 (char **matrix);
 void print_stats 		 (char **matrix);
 void reset_stats 		 (char **array);
 int  validate_def_defeat (char **matrix);
+void draw_line(void);
 
 /* Global Statistics: 
  *  Each Row   			: How many: 'X', 'Y', 'O's are present
@@ -60,6 +58,9 @@ typedef struct
 
 global_stats *p_global_stats;
 
+int rowsize = 0;
+int colsize = 0;
+
 /* p_global_stats contains 3 arrays: index 0 -> For User Stats ('X')
  *								   : index 1 -> For Computer Stats ('Y')
  *								   : index 2 -> For Vacant Positions Stats ('O')
@@ -71,14 +72,24 @@ int main()
 
 	int victory_flag = NO_VICTORY; 
 
-	int num_choices = ROWSIZE*COLSIZE; /* No. of Positions to be filled-in by User */
+	int num_choices; /* No. of Free Positions -- available to be filled by the User/Computer */
 
 	int counter = 0;
+
+	char **matrix = NULL;
+
+	/* Request the User to Choose the Type of Matrix */
+	printf("\nWelcome to the Game: Tic-Tac-Toe--Human Vs Computer!\n\n");
+	printf("\nPlease Select the Order of Matrix (Example: Choose 4 for a 4x4 Matrix):\n\n");
+	scanf ("%d", &rowsize);
+	colsize = rowsize;
+	
+	num_choices = rowsize*colsize; /* No. of Positions to be filled-in by User */
 
 	/* Initialize MatriX */
 
 	/* Allocate Memory for Rows */
-	char **matrix = malloc(ROWSIZE*sizeof(char*));
+	matrix = malloc(rowsize*sizeof(char*));
 	if (NULL==matrix)
 	{
 		printf("\nMemory Allocation failed\n");
@@ -86,15 +97,15 @@ int main()
 	}
 
 	/* Now, allocate memory for Columns */
-	for (rowindex=0; rowindex<ROWSIZE; rowindex++)
+	for (rowindex=0; rowindex<rowsize; rowindex++)
 	{
-		*(matrix+rowindex) = malloc(COLSIZE*sizeof(char));
+		*(matrix+rowindex) = malloc(colsize*sizeof(char));
 		if (NULL==*(matrix+rowindex))
 		{
 			printf("\nMemory Allocation failed\n");
 			exit (EXIT_FAILURE);
 		}
-		memset (*(matrix+rowindex), 'O', COLSIZE*sizeof(char));
+		memset (*(matrix+rowindex), 'O', colsize*sizeof(char));
 	}
 
 	/* Initialize the Global Stats Structure */
@@ -107,11 +118,10 @@ int main()
 
 	for (counter=0; counter<3; counter++)
 	{
-		p_global_stats[counter].row_stats = calloc(ROWSIZE, sizeof(int));
-		p_global_stats[counter].col_stats = calloc(COLSIZE, sizeof(int));
+		p_global_stats[counter].row_stats = calloc(rowsize, sizeof(int));
+		p_global_stats[counter].col_stats = calloc(colsize, sizeof(int));
 	}
 
-	printf("\nWelcome to the Game: Tic-Tac-Toe -- Human Vs Computer !\n\n");
 	/* Print the Tic-Tac-Toe Array */
 	print_tic_tac_toe(matrix);
 
@@ -125,9 +135,7 @@ int main()
 		print_tic_tac_toe(matrix);
 
 		victory_flag = update_stats(matrix);
-		#ifdef DEBUG_FLAG
-		print_stats(matrix); 
-		#endif
+		/* print_stats(matrix); */
 		/* Check if the User has Won */
 		if (victory_flag == VICTORY)
 		{
@@ -167,7 +175,8 @@ void user_play (char **matrix)
 
 	
 	/* Request for User I/P */
-	printf ("\nSelect Your Choice: (ROWNO COLNO)\n");
+	printf ("\nUsage: To Select the Position: Row 1, Column 2:: Type on Terminal: 1 2 (enter)\n");
+	printf ("\nSelect Your Choice: (ROWNO COLNO)\n\n");
 	scanf  ("%d %d", &user_rowno, &user_colno);
 
 	/* Validate User I/P */
@@ -229,8 +238,8 @@ void computer_play (char **matrix)
 		/* No need to worry about Left Body Diagonal Now :) */
 
 		/* Find out the Row which is getting Completed at the Highest Pace */
-		row_minimum = ROWSIZE;
-		for (rowindex=0; rowindex<ROWSIZE; rowindex++)
+		row_minimum = rowsize;
+		for (rowindex=0; rowindex<rowsize; rowindex++)
 		{
 			if (row_minimum > p_global_stats[2].row_stats[rowindex])
 			{
@@ -244,8 +253,8 @@ void computer_play (char **matrix)
 		}
 
 		/* Find out the Column which is getting Completed at the Highest Pace */
-		col_minimum = COLSIZE;
-		for (colindex=0; colindex<COLSIZE; colindex++)
+		col_minimum = colsize;
+		for (colindex=0; colindex<colsize; colindex++)
 		{
 			if (col_minimum > p_global_stats[2].col_stats[colindex])
 			{
@@ -266,13 +275,13 @@ void computer_play (char **matrix)
 		{
 			/* Destroy the Right Body Diagonal */
 			rowindex=0;
-			colindex = ROWSIZE-1-rowindex;
+			colindex = rowsize-1-rowindex;
 
 			/* Find a Vacant Position on the Right Body Diagonal */
 			while (*(*(matrix+rowindex)+colindex)!= 'O')
 			{
 				rowindex++;
-				colindex = ROWSIZE-1-rowindex;
+				colindex = rowsize-1-rowindex;
 			}
 		
 			*(*(matrix+rowindex)+colindex) = 'Y';
@@ -284,11 +293,11 @@ void computer_play (char **matrix)
 			/* Destroy the Rows/Columns */
 			if (col_minimum<=row_minimum)
 			{
-				if (col_min_index<COLSIZE)
+				if (col_min_index<colsize)
 				{
 					colindex = col_min_index;
 					rowindex = 0;
-					while ((rowindex<ROWSIZE)&&(*(*(matrix+rowindex)+colindex)!= 'O'))
+					while ((rowindex<rowsize)&&(*(*(matrix+rowindex)+colindex)!= 'O'))
 					{
 						rowindex++;
 					}
@@ -296,18 +305,18 @@ void computer_play (char **matrix)
 			}
 			else 
 			{
-				if (row_min_index<ROWSIZE)
+				if (row_min_index<rowsize)
 				{
 					rowindex = row_min_index;
 					colindex = 0;
-					while ((colindex<COLSIZE)&&(*(*(matrix+rowindex)+colindex)!= 'O'))
+					while ((colindex<colsize)&&(*(*(matrix+rowindex)+colindex)!= 'O'))
 					{
 						colindex++;
 					}
 				}
 			}
 			
-			if ((rowindex<ROWSIZE) && (colindex<COLSIZE) && (*(*(matrix+rowindex)+colindex) == 'O'))
+			if ((rowindex<rowsize) && (colindex<colsize) && (*(*(matrix+rowindex)+colindex) == 'O'))
 			{
 				*(*(matrix+rowindex)+colindex) = 'Y';
 			}
@@ -333,7 +342,7 @@ int validate_def_defeat (char **matrix)
 	if ((p_global_stats[1].ldiagonal_stats)&&(p_global_stats[1].rdiagonal_stats))
 	{
 		/* Every Row has atleast one 'Y' Entry */
-		for (rowindex=0; rowindex<ROWSIZE; rowindex++)
+		for (rowindex=0; rowindex<rowsize; rowindex++)
 		{
 			if (p_global_stats[1].row_stats[rowindex]>0)
 			{
@@ -347,7 +356,7 @@ int validate_def_defeat (char **matrix)
 		}	
 		
 		/* Every Column has atleast one 'Y' Entry */
-		for (colindex=0; colindex<COLSIZE; colindex++)
+		for (colindex=0; colindex<colsize; colindex++)
 		{
 			if (p_global_stats[1].col_stats[colindex]>0)
 			{
@@ -376,26 +385,67 @@ void print_tic_tac_toe (char **matrix)
 
 	int counter = 0;
 
-	printf("\n-----------------------\n");
+	printf ("\n");
+	printf("\033[31m");
+	draw_line();
 	printf("   | ");
-	for (counter=0; counter<ROWSIZE; counter++)
+	for (counter=0; counter<rowsize; counter++)
 	{
 		printf("  %d ", counter);
 	}
 	printf(" |");
 
-	printf("\n-----------------------\n");
-	for (rowindex=0,counter=0; (rowindex<ROWSIZE && counter<ROWSIZE); rowindex++, counter++)
+	printf ("\n");
+	draw_line();
+	printf("\033[39m"); 
+	for (rowindex=0,counter=0; (rowindex<rowsize && counter<rowsize); rowindex++, counter++)
 	{
+		printf("\033[31m");
 		printf(" %d | ", counter);
-		for (colindex=0; colindex<COLSIZE; colindex++)
+		printf("\033[39m"); 
+		for (colindex=0; colindex<colsize; colindex++)
 		{
-			printf("  %c ", *(*(matrix+rowindex)+colindex));
+			switch (*(*(matrix+rowindex)+colindex))
+			{
+				case 'O':
+				{
+					printf("  \033[37m%c ", *(*(matrix+rowindex)+colindex));
+					break;
+				}
+				case 'X':
+				{
+					printf("  \033[34m%c ", *(*(matrix+rowindex)+colindex));
+					break;
+				}
+
+				case 'Y':
+				{
+					printf("  \033[32m%c ", *(*(matrix+rowindex)+colindex));
+					break;
+				}
+			}
 		}
+		printf("\033[39m"); 
+		printf("\033[31m");
 		printf (" |\n");
+		printf("\033[39m"); 
 	}	
-	printf("-----------------------\n\n");
+	printf("\033[31m");
+	draw_line();
+	printf("\033[39m"); 
+	printf("\n");
 }	
+
+void draw_line(void)
+{
+	int counter = 0;
+
+	for (counter=0; counter<rowsize; counter++)
+	{
+		printf("------");
+	}
+	printf("\n");
+}
 
 int update_stats (char **matrix)
 {
@@ -406,9 +456,9 @@ int update_stats (char **matrix)
 	
 
 	/* ROW-STATS */
-	for (rowindex=0; rowindex<ROWSIZE; rowindex++)
+	for (rowindex=0; rowindex<rowsize; rowindex++)
 	{
-		for (colindex=0; colindex<COLSIZE; colindex++)
+		for (colindex=0; colindex<colsize; colindex++)
 		{
 			if (*(*(matrix+rowindex)+colindex) == 'X')
 			{
@@ -421,7 +471,7 @@ int update_stats (char **matrix)
 				}
 				
 				/* RIGHT-DIAGONAL STATS */
-				if (rowindex+colindex==(ROWSIZE-1))
+				if (rowindex+colindex==(rowsize-1))
 				{
 					p_global_stats[0].rdiagonal_stats++;
 				}
@@ -437,7 +487,7 @@ int update_stats (char **matrix)
 				}
 
 				/* RIGHT-DIAGONAL STATS */
-				if (rowindex+colindex==(ROWSIZE-1))
+				if (rowindex+colindex==(rowsize-1))
 				{
 					p_global_stats[1].rdiagonal_stats++;
 				}
@@ -453,24 +503,24 @@ int update_stats (char **matrix)
 				}
 
 				/* RIGHT-DIAGONAL STATS */
-				if (rowindex+colindex==(ROWSIZE-1))
+				if (rowindex+colindex==(rowsize-1))
 				{
 					p_global_stats[2].rdiagonal_stats++;
 				}
 			}
 
 			/* Check for User's Victory */
-			if (p_global_stats[0].row_stats[rowindex]==ROWSIZE)
+			if (p_global_stats[0].row_stats[rowindex]==rowsize)
 			{
 				printf ("\nRow %d is Complete !\n", rowindex);
 				ret_val = VICTORY;
 			}
-			else if(p_global_stats[0].ldiagonal_stats==ROWSIZE)
+			else if(p_global_stats[0].ldiagonal_stats==rowsize)
 			{
 				printf ("\nLeft Diagonal is Complete !\n");
 				ret_val = VICTORY;
 			}
-			else if(p_global_stats[0].rdiagonal_stats==ROWSIZE)
+			else if(p_global_stats[0].rdiagonal_stats==rowsize)
 			{
 				printf ("\nRight Diagonal is Complete !\n");
 				ret_val = VICTORY;
@@ -480,9 +530,9 @@ int update_stats (char **matrix)
 	}			/* Outer for() loop -- for rowindex */
 
 	/* COLUMN-STATS */
-	for (colindex=0; colindex<COLSIZE; colindex++)
+	for (colindex=0; colindex<colsize; colindex++)
 	{
-		for (rowindex=0; rowindex<ROWSIZE; rowindex++)
+		for (rowindex=0; rowindex<rowsize; rowindex++)
 		{
 			if (*(*(matrix+rowindex)+colindex) == 'X')
 			{
@@ -499,7 +549,7 @@ int update_stats (char **matrix)
 		}
 
 		/* Check for User's Victory */
-		if (p_global_stats[0].col_stats[colindex]==COLSIZE)
+		if (p_global_stats[0].col_stats[colindex]==colsize)
 		{
 			printf ("\nColumn %d is Complete !\n", colindex);
 			ret_val = VICTORY;
@@ -529,11 +579,11 @@ void print_stats (char **matrix)
 			{	
 				printf ("\n#####################################################################################\n");
 				printf ("\nPlayer Statistics:\n\n");
-				for (rowindex=0; rowindex<ROWSIZE; rowindex++)
+				for (rowindex=0; rowindex<rowsize; rowindex++)
 				{
 					printf("\nRow No. %d: count = %d\n", rowindex, p_global_stats[counter].row_stats[rowindex]);
 				}
-				for (colindex=0; colindex<COLSIZE; colindex++)
+				for (colindex=0; colindex<colsize; colindex++)
 				{
 					printf("\nColumn No. %d: count = %d\n", colindex, p_global_stats[counter].col_stats[colindex]);
 				}
@@ -547,11 +597,11 @@ void print_stats (char **matrix)
 			{	
 				printf ("\n#####################################################################################\n");
 				printf ("\nComputer Statistics:\n\n");
-				for (rowindex=0; rowindex<ROWSIZE; rowindex++)
+				for (rowindex=0; rowindex<rowsize; rowindex++)
 				{
 					printf("\nRow No. %d: count = %d\n", rowindex, p_global_stats[counter].row_stats[rowindex]);
 				}
-				for (colindex=0; colindex<COLSIZE; colindex++)
+				for (colindex=0; colindex<colsize; colindex++)
 				{
 					printf("\nColumn No. %d: count = %d\n", colindex, p_global_stats[counter].col_stats[colindex]);
 				}
@@ -565,11 +615,11 @@ void print_stats (char **matrix)
 			{	
 				printf ("\n#####################################################################################\n");
 				printf ("\nVacant Slot Statistics:\n\n");
-				for (rowindex=0; rowindex<ROWSIZE; rowindex++)
+				for (rowindex=0; rowindex<rowsize; rowindex++)
 				{
 					printf("\nRow No. %d: count = %d\n", rowindex, p_global_stats[counter].row_stats[rowindex]);
 				}
-				for (colindex=0; colindex<COLSIZE; colindex++)
+				for (colindex=0; colindex<colsize; colindex++)
 				{
 					printf("\nColumn No. %d: count = %d\n", colindex, p_global_stats[counter].col_stats[colindex]);
 				}
@@ -588,8 +638,8 @@ void reset_stats (char **array)
 
 	for (counter=0; counter<3; counter++)
 	{
-		memset (p_global_stats[counter].row_stats, 0, ROWSIZE*sizeof(int));
-		memset (p_global_stats[counter].col_stats, 0, COLSIZE*sizeof(int));
+		memset (p_global_stats[counter].row_stats, 0, rowsize*sizeof(int));
+		memset (p_global_stats[counter].col_stats, 0, colsize*sizeof(int));
 		p_global_stats[counter].ldiagonal_stats = 0;
 		p_global_stats[counter].rdiagonal_stats = 0;
 	}
