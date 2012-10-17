@@ -20,7 +20,7 @@ You Win:: If you are able to complete any of the below conditions -
 You Lose:: If none of the above mentioned conditions (to win) are fulfilled, you are Defeated.
 
 *Basic Information:*
-==================
+
 
 Based upon the Dimensions of the Matrix you choose (eg: 3x3, 4x4 etc), you will be presented with a Printed Matrix
 initialized with all 'O's.
@@ -30,7 +30,7 @@ In general: 'O' means -> vacant position
             'Y' means -> Computer's Entry
 
 *How to Compile:*
-===============
+
 If you do not want to print Stats after every Human move, compile as follows:
 
 $ gcc tic_tac_toe.c -ansi -Wall -pedantic -o tictactoe
@@ -41,7 +41,6 @@ $ gcc tic_tac_toe.c -ansi -Wall -pedantic -o tictactoe -DDEBUG_FLAG
 
 
 *How To Play this Game:*
-======================
 
 For each Chance, the User has to provide 2 Inputs: ROWNO COLNO
 
