@@ -49,3 +49,7 @@ For Example:
 Suppose the User wants to make an entry at: Row No. 2, Column No. 3
 
 Then, the User must provide the following Input: 2 3 (Enter)
+
+*Screenshot:*
+
+![Tic-Tac-Toe: Human Vs Computer](https://raw.github.com/sandeepsinghmails/tictactoe_HumanVsComputer/master/images/screenshot.jpg)
