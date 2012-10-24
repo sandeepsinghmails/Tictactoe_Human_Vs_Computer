@@ -1,7 +1,7 @@
 **Tic-Tac-Toe: Human Vs Computer**
 
 
-This is a Tic-Tac-Toe Game to be played against a Computer.
+This is a Tic-Tac-Toe Game to be played against the Computer.
 
 The User is free to choose any size (NxN) Matrix
 
