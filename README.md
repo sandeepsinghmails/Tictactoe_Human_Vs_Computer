@@ -52,4 +52,4 @@ Then, the User must provide the following Input: 2 3 (Enter)
 
 *Screenshot:*
 
-![Tic-Tac-Toe: Human Vs Computer](https://raw.github.com/sandeepsinghmails/tictactoe_HumanVsComputer/master/images/screenshot.jpeg)
+![Tic-Tac-Toe: Human Vs Computer](https://raw.github.com/sandeepsinghmails/Tictactoe_Human_Vs_Computer/master/images/screenshot.jpeg)
